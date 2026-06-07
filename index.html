@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mystère</title>
+<style>
+:root{--ivoire:#F5EEDC}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
+body{font-family:Garamond,Georgia,"Times New Roman",serif}
+#film{position:relative;width:100vw;height:100vh;overflow:hidden;background:#000}
+#start{position:absolute;z-index:300;top:20px;right:20px;padding:13px 22px;border:1px solid rgba(245,238,220,.58);background:rgba(0,0,0,.78);color:var(--ivoire);font-family:Garamond,Georgia,serif;font-size:1.15rem;cursor:pointer}
+.scene{position:absolute;inset:0;opacity:0;transition:opacity 6s ease-in-out;background-size:contain;background-repeat:no-repeat;background-position:center center;background-color:#000;filter:brightness(.96) contrast(1.04) saturate(.94);transform:scale(1)}
+.scene.active{opacity:1}
+.scene::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at center,transparent 48%,rgba(0,0,0,.28) 100%),linear-gradient(rgba(0,0,0,.03),rgba(0,0,0,.12))}
+#rain{position:absolute;inset:0;z-index:20;pointer-events:none;opacity:.08;mix-blend-mode:screen}
+.title,.credit{position:absolute;width:100%;text-align:center;color:var(--ivoire);z-index:50;opacity:0;pointer-events:none;text-shadow:0 0 28px rgba(0,0,0,.95)}
+.title{top:8vh;font-size:clamp(3.4rem,7.4vw,8.2rem);letter-spacing:.22em}
+.credit{top:23vh;color:rgba(245,238,220,.82);font-size:clamp(1.1rem,2vw,2.1rem);letter-spacing:.10em}
+body.playing .title{animation:titleFade 7s ease-in-out forwards}
+body.playing .credit{animation:creditFade 7s ease-in-out 1s forwards}
+.crawl-space{position:absolute;inset:0;z-index:80;overflow:hidden;perspective:1050px;pointer-events:none}
+.crawl{position:absolute;left:50%;bottom:-40vh;width:min(96vw,1450px);transform-origin:50% 100%;color:var(--ivoire);font-size:clamp(3rem,5.65vw,7.3rem);line-height:1.56;font-style:italic;font-weight:600;text-align:justify;white-space:pre-line;opacity:0;text-shadow:0 0 12px #000,0 0 32px #000,0 0 70px #000,0 0 18px rgba(245,238,220,.24)}
+.crawl.run{animation:starCrawl 78s linear forwards}
+#crawl2.run{animation:starCrawlLong 84s linear forwards}
+@keyframes starCrawl{0%{opacity:1;transform:translateX(-50%) rotateX(55deg) translateY(42vh) scale(1)}30%{opacity:1;transform:translateX(-50%) rotateX(55deg) translateY(-8vh) scale(.98)}65%{opacity:1;transform:translateX(-50%) rotateX(55deg) translateY(-62vh) scale(.94)}96%{opacity:1;transform:translateX(-50%) rotateX(55deg) translateY(-90vh) scale(.90)}100%{opacity:0;transform:translateX(-50%) rotateX(55deg) translateY(-112vh) scale(.86)}}
+@keyframes starCrawlLong{0%{opacity:1;transform:translateX(-50%) rotateX(55deg) translateY(42vh) scale(1)}30%{opacity:1;transform:translateX(-50%) rotateX(55deg) translateY(-8vh) scale(.98)}65%{opacity:1;transform:translateX(-50%) rotateX(55deg) translateY(-58vh) scale(.94)}94%{opacity:1;transform:translateX(-50%) rotateX(55deg) translateY(-86vh) scale(.90)}100%{opacity:0;transform:translateX(-50%) rotateX(55deg) translateY(-112vh) scale(.86)}}
+.whiteout{position:absolute;inset:0;z-index:160;background:white;opacity:0;pointer-events:none}
+.whiteout.run{animation:whiteOut 8s ease-in-out forwards}
+@keyframes titleFade{0%{opacity:0;transform:scale(.96)}25%,70%{opacity:1}100%{opacity:0;transform:scale(1.05)}}
+@keyframes creditFade{0%{opacity:0}22%,68%{opacity:.9}100%{opacity:0}}
+@keyframes soulDrift{0%{transform:scale(1)}100%{transform:scale(1.06)}}
+
+#s5.active{animation:soulZoom5 13s ease-in-out forwards}
+#s6.active{animation:soulZoom6 13s ease-in-out forwards}
+#s7.active{animation:soulZoom7 16s ease-in-out forwards}
+#s8.active,#s9.active,#s10.active{transform:scale(1)!important;animation:none!important}
+@keyframes soulZoom5{0%{transform:scale(1)}100%{transform:scale(1.06)}}
+@keyframes soulZoom6{0%{transform:scale(1)}100%{transform:scale(1.10)}}
+@keyframes soulZoom7{0%{transform:scale(1)}100%{transform:scale(1.15)}}
+
+@keyframes whiteOut{0%{opacity:0}100%{opacity:1}}
+</style>
+</head>
+<body>
+<div id="film">
+<audio id="music" src="assets/Adoración Araujo.mp3" preload="auto"></audio>
+<button id="start">Lancer le film</button>
+
+<section id="s1" class="scene" style="background-image:url('assets/scene-01.jpg')"></section>
+<section id="s2" class="scene" style="background-image:url('assets/scene-02.jpg')"></section>
+<section id="s3" class="scene" style="background-image:url('assets/scene-03.jpg')"></section>
+<section id="s4" class="scene" style="background-image:url('assets/scene-04.jpg')"></section>
+<section id="s5" class="scene" style="background-image:url('assets/scene-05.jpg')"></section>
+<section id="s6" class="scene" style="background-image:url('assets/scene-06.jpg')"></section>
+<section id="s7" class="scene" style="background-image:url('assets/scene-07.jpg')"></section>
+<section id="s8" class="scene" style="background-image:url('assets/scene-08.jpg')"></section>
+<section id="s9" class="scene" style="background-image:url('assets/scene-09.jpg')"></section>
+<section id="s10" class="scene" style="background-image:url('assets/scene-10.jpg')"></section>
+
+<canvas id="rain"></canvas>
+<div class="title">Mystère</div>
+<div class="credit">Musique : Adoración Araujo</div>
+
+<div class="crawl-space">
+<div id="crawl1" class="crawl">Elle ferma les yeux.
+
+Les paroles de l’autre glissèrent comme des gouttes d’eau le long de son corps imperméable.
+
+Elle voulait continuer à les entendre mais elles s’étaient déjà éloignées.
+
+Elles n’étaient plus qu’une petite musique dont les notes s’évanouissaient l’une après l’autre.</div>
+
+<div id="crawl2" class="crawl">Alors un vent se leva, tout d’abord à peine perceptible, puis comme une bourrasque il l’enveloppa.
+
+Elle comprit qu’elle ne pourrait rien contre lui qui l’emportait inexorablement vers son destin.
+
+Alors elle la sentit : l’odeur du soufre, le vol plané de l’oiseau au-dessus d’elle qui la guettait pour l’emporter vers l’ultime voyage.</div>
+</div>
+<div id="whiteout" class="whiteout"></div>
+</div>
+
+<script>
+const start=document.getElementById("start"),music=document.getElementById("music"),crawl1=document.getElementById("crawl1"),crawl2=document.getElementById("crawl2"),whiteout=document.getElementById("whiteout"),scenes=[...document.querySelectorAll(".scene")];
+let timers=[];
+function clearTimers(){timers.forEach(t=>clearTimeout(t));timers=[]}
+function at(ms,fn){timers.push(setTimeout(fn,ms))}
+function showScene(n){scenes.forEach(s=>s.classList.remove("active"));const scene=document.getElementById("s"+n);if(scene)scene.classList.add("active")}
+function runCrawl(el){el.classList.remove("run");void el.offsetWidth;el.classList.add("run")}
+let fadeTimer=null;
+function playMusicFromStart(){
+ if(fadeTimer){clearInterval(fadeTimer);fadeTimer=null}
+ music.loop=true;
+ music.volume=1;
+ music.pause();
+ music.currentTime=0;
+ music.play();
+}
+function stopMusic(){
+ if(fadeTimer){clearInterval(fadeTimer);fadeTimer=null}
+ music.pause();
+ music.currentTime=0;
+ music.volume=1;
+}
+function fadeOutMusic(duration=7000){
+ if(fadeTimer){clearInterval(fadeTimer)}
+ const startVolume=music.volume || 1;
+ const steps=40;
+ let step=0;
+ fadeTimer=setInterval(()=>{
+   step++;
+   music.volume=Math.max(0,startVolume*(1-step/steps));
+   if(step>=steps){
+     clearInterval(fadeTimer);
+     fadeTimer=null;
+     music.pause();
+     music.currentTime=0;
+     music.volume=1;
+   }
+ },duration/steps);
+}
+
+
+start.addEventListener("click",()=>{
+clearTimers();document.body.classList.add("playing");start.style.display="none";
+showScene(1);playMusicFromStart();runCrawl(crawl1);
+at(18000,()=>showScene(2));
+at(36000,()=>showScene(3));
+at(54000,()=>showScene(4));
+at(90000,()=>{fadeOutMusic(7000);showScene(5)});
+at(100000,()=>showScene(6));
+at(110000,()=>showScene(7));
+at(122000,()=>showScene(8));
+at(124000,()=>{playMusicFromStart();runCrawl(crawl2)});
+at(158000,()=>showScene(9));
+at(198000,()=>{music.loop=false;fadeOutMusic(7000);showScene(10)});
+at(214000,()=>whiteout.classList.add("run"));
+});
+
+const canvas=document.getElementById("rain"),ctx=canvas.getContext("2d");let drops=[];
+function resizeRain(){canvas.width=innerWidth;canvas.height=innerHeight;drops=[];const count=Math.floor(canvas.width*canvas.height/13000);for(let i=0;i<count;i++){drops.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,len:10+Math.random()*24,speed:3+Math.random()*8,wind:-2-Math.random()*4,alpha:.018+Math.random()*.07,thick:.25+Math.random()*.55})}}
+function drawRain(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.lineCap="round";for(const d of drops){ctx.beginPath();ctx.strokeStyle=`rgba(230,240,255,${d.alpha})`;ctx.lineWidth=d.thick;ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+d.wind,d.y+d.len);ctx.stroke();d.x+=d.wind*.11;d.y+=d.speed;if(d.y>canvas.height+80||d.x<-100){d.x=Math.random()*canvas.width+90;d.y=-80}}requestAnimationFrame(drawRain)}
+addEventListener("resize",resizeRain);resizeRain();drawRain();
+</script>
+</body>
+</html>
